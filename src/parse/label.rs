@@ -80,12 +80,8 @@ fn parse_label_end(input: &[u8]) -> nom::IResult<&[u8], Label> {
     nom::branch::alt((parse_empty_label, parse_label_ref))(input)
 }
 
-fn parse_label(input: &[u8]) -> nom::IResult<&[u8], Label> {
-    nom::branch::alt((parse_direct_label, parse_empty_label, parse_label_ref))(input)
-}
-
 pub(crate) fn parse_label_list(input: &[u8]) -> nom::IResult<&[u8], LabelSet> {
-    let (input, (mut labels, last)) = nom::multi::many_till(parse_label, parse_label_end)(input)?;
+    let (input, (mut labels, last)) = nom::multi::many_till(parse_direct_label, parse_label_end)(input)?;
     match last {
         Label::End => (),
         label => labels.push(label),
