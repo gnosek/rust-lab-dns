@@ -43,8 +43,8 @@ pub fn ok(orig_packet: DnsPacket, answers: Vec<Response>) -> DnsPacket {
 
 fn addr_to_record(addr: &SocketAddr) -> ResourceRecord {
     match addr {
-        SocketAddr::V4(addr) => ResourceRecord::A(addr.ip().clone()),
-        SocketAddr::V6(addr) => ResourceRecord::AAAA(addr.ip().clone()),
+        SocketAddr::V4(addr) => ResourceRecord::A(*addr.ip()),
+        SocketAddr::V6(addr) => ResourceRecord::AAAA(*addr.ip()),
     }
 }
 
