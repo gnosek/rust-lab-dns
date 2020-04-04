@@ -22,3 +22,7 @@ members = ["."]
 [[bin]]
 name = "parse_dns_packet"
 path = "fuzz_targets/parse_dns_packet.rs"
+
+[[bin]]
+name = "parse_dns_tcp_packet"
+path = "fuzz_targets/parse_dns_tcp_packet.rs"

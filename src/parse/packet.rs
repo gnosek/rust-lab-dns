@@ -105,7 +105,7 @@ pub fn parse_dns_packet(input: &[u8]) -> Result<(&[u8], DnsPacket), DnsParseErro
 
 pub fn parse_dns_tcp_packet(input: &[u8]) -> Result<(&[u8], DnsPacket), DnsParseError> {
     let (packet, length) = nom::number::streaming::be_i16(input)?;
-    let packet = &packet[..length as usize];
+    let packet = &packet.get(..length as usize).ok_or(DnsParseError::InvalidLabel)?;
 
     parse_dns_packet(packet)
 }
