@@ -24,7 +24,7 @@ pub(crate) enum RawResourceRecord<'a> {
 impl<'a> ResolveRefLabels<'a> for RawResourceRecord<'a> {
     type Output = Self;
 
-    fn resolve_ref_labels(self, orig_packet: &'a [u8]) -> Result<Self, ParseError> {
+    fn resolve_ref_labels(self, orig_packet: &'a [u8]) -> Result<Self, DnsParseError> {
         match self {
             RawResourceRecord::SOA {
                 mname,

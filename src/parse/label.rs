@@ -6,10 +6,10 @@ use std::convert::TryInto;
 impl<'a> ResolveRefLabels<'a> for Label<'a> {
     type Output = Vec<Label<'a>>;
 
-    fn resolve_ref_labels(self, orig_packet: &'a [u8]) -> Result<Self::Output, ParseError> {
+    fn resolve_ref_labels(self, orig_packet: &'a [u8]) -> Result<Self::Output, DnsParseError> {
         match self {
             Label::Reference(offset) => {
-                let target = &orig_packet[offset as usize..];
+                let target = &orig_packet.get(offset as usize..).ok_or(DnsParseError::InvalidLabel)?;
                 let (_, target_label) = parse_label_list(target)?;
                 Ok(target_label.resolve_ref_labels(orig_packet)?.0)
             }
@@ -32,7 +32,7 @@ impl<'a> TryInto<String> for Label<'a> {
 impl<'a> ResolveRefLabels<'a> for LabelSet<'a> {
     type Output = Self;
 
-    fn resolve_ref_labels(self, orig_packet: &'a [u8]) -> Result<Self, ParseError> {
+    fn resolve_ref_labels(self, orig_packet: &'a [u8]) -> Result<Self, DnsParseError> {
         let resolved_labels = self
             .0
             .into_iter()

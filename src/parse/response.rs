@@ -15,7 +15,7 @@ pub(crate) struct RawResponse<'a> {
 impl<'a> ResolveRefLabels<'a> for RawResponse<'a> {
     type Output = Self;
 
-    fn resolve_ref_labels(mut self, orig_packet: &'a [u8]) -> Result<Self, ParseError> {
+    fn resolve_ref_labels(mut self, orig_packet: &'a [u8]) -> Result<Self, DnsParseError> {
         self.qname = self.qname.resolve_ref_labels(orig_packet)?;
         self.rdata = self.rdata.resolve_ref_labels(orig_packet)?;
         Ok(self)

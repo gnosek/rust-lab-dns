@@ -19,7 +19,7 @@ struct RawDnsPacket<'a> {
 impl<'a> ResolveRefLabels<'a> for RawDnsPacket<'a> {
     type Output = Self;
 
-    fn resolve_ref_labels(mut self, orig_packet: &'a [u8]) -> Result<Self::Output, ParseError> {
+    fn resolve_ref_labels(mut self, orig_packet: &'a [u8]) -> Result<Self::Output, DnsParseError> {
         let queries: Result<Vec<_>, _> = self
             .queries
             .into_iter()
@@ -73,7 +73,7 @@ impl<'a> TryInto<DnsPacket> for RawDnsPacket<'a> {
     }
 }
 
-fn parse_raw_dns_packet(input: &[u8]) -> nom::IResult<&[u8], RawDnsPacket> {
+fn parse_raw_dns_packet(input: &[u8]) -> Result<(&[u8], RawDnsPacket), DnsParseError> {
     let orig_packet = input;
 
     let (input, header) = parse_header_flags(input)?;
