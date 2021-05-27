@@ -1,7 +1,7 @@
 use std::str::Utf8Error;
 
-pub(crate) type BitsError<'a> = ((&'a [u8], usize), nom::error::ErrorKind);
-pub(crate) type ParseError<'a> = nom::Err<(&'a [u8], nom::error::ErrorKind)>;
+pub(crate) type ParseError<'a> = nom::Err<nom::error::Error<&'a [u8]>>;
+pub(crate) type BitsError<T> = nom::error::Error<T>;
 
 #[derive(Debug)]
 pub enum DnsParseError<'a> {

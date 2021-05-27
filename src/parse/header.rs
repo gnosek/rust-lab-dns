@@ -7,7 +7,7 @@ pub(crate) fn parse_header_flags(input: &[u8]) -> nom::IResult<&[u8], Header> {
     let (input, seq) = nom::number::streaming::be_u16(input)?;
     let (input, flag_bytes) = nom::bytes::streaming::take(2usize)(input)?;
     let (_, raw_flags): (&[u8], RawHeaderFlags) =
-        nom::bits::bits(nom::sequence::tuple::<_, _, BitsError<'_>, _>((
+        nom::bits::bits(nom::sequence::tuple::<_, _, BitsError<_>, _>((
             nom::bits::complete::take(1usize),
             nom::bits::complete::take(4usize),
             nom::bits::complete::take(1usize),

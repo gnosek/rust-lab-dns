@@ -53,7 +53,7 @@ impl<'a> TryInto<Vec<String>> for LabelSet<'a> {
 
 fn parse_direct_label(input: &[u8]) -> nom::IResult<&[u8], Label> {
     let (input, (_, len)): (&[u8], (u8, u8)) =
-        nom::bits::bits(nom::sequence::pair::<_, _, _, BitsError, _, _>(
+        nom::bits::bits(nom::sequence::pair::<_, _, _, BitsError<_>, _, _>(
             nom::bits::streaming::tag(0, 2usize),
             nom::bits::streaming::take(6usize),
         ))(input)?;
@@ -68,7 +68,7 @@ fn parse_empty_label(input: &[u8]) -> nom::IResult<&[u8], Label> {
 
 fn parse_label_ref(input: &[u8]) -> nom::IResult<&[u8], Label> {
     let (input, (_, offset)): (&[u8], (u8, u16)) =
-        nom::bits::bits(nom::sequence::pair::<_, _, _, BitsError, _, _>(
+        nom::bits::bits(nom::sequence::pair::<_, _, _, BitsError<_>, _, _>(
             nom::bits::streaming::tag(0x3, 2usize),
             nom::bits::streaming::take(14usize),
         ))(input)?;
